@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#
+# Show the count of words in a document (e.g., to find words that are
+# used too often, ...)
+#
+# Arguments:
+#   $1: the name of the article .tex file
+#       please note that detex will automatically resolve \input, etc.
+#
+# Copyright 2011 (C) B. Schauerte, schauerte@ieee.org
+
+detex $1 | deroff -w | tr A-Z a-z | sort | uniq -c | sort -rn | less

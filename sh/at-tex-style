@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#
+# "Print all sentences in a document containing phrases that are either
+#  frequently misused or indicate wordiness"
+#
+# Copyright 2011 (C) B. Schauerte, schauerte@ieee.org
+
+detex $1 | style
