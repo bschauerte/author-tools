@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>csv2tex - Create a LaTex table from comma separated data</title>
+<meta name="description" content="CSV to LaTeX converter">
+<meta name="keywords" content="CSV,LaTeX,table">
+<meta name="author" content="Boris Schauerte">
+</head>
+<body>
+    <script type="text/javascript">
+        // This will parse a delimited string into an array of
+        // arrays. The default delimiter is the comma, but this
+        // can be overriden in the second argument.
+        function CSVToArray( strData, strDelimiter ){
+        	strDelimiter = (strDelimiter || ",");
+        	var objPattern = new RegExp(
+        		(
+        			// Delimiters.
+        			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+        			// Quoted fields.
+        			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+        			// Standard fields.
+        			"([^\"\\" + strDelimiter + "\\r\\n]*))"
+        		),
+        		"gi"
+        		);
+
+        	var arrData = [[]];
+        	var arrMatches = null;
+
+        	while (arrMatches = objPattern.exec( strData ))
+            {
+        		var strMatchedDelimiter = arrMatches[ 1 ];
+        		if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter))
+                {
+        			arrData.push( [] );
+        		}
+
+        		if (arrMatches[ 2 ])
+                {
+        			var strMatchedValue = arrMatches[ 2 ].replace(
+        				new RegExp( "\"\"", "g" ),
+        				"\""
+        				);
+        		} else {
+        			var strMatchedValue = arrMatches[ 3 ];
+        		}
+
+        		arrData[ arrData.length - 1 ].push( strMatchedValue );
+        	}
+
+        	return( arrData );
+        }
+    </script>
+
+    <script type="text/javascript">
+    function convertText() {
+        var csvTextarea = document.getElementById("csvtext");
+        var texTextarea = document.getElementById("textext");
+
+        // get the data
+        var arr = CSVToArray(csvTextarea.value,',')
+
+        // check the table content
+        var nrows = 0;
+        var ncols = 0;
+        nrows = arr.length;
+        ncols = arr[0].length;
+        for (i = 0; i < arr.length; i++)
+        {
+            if (ncols != arr[i].length)
+            {
+                alert('The number of columns is not constant for all rows!');
+            }
+        }
+
+        // create the LaTeX tabular environment
+        texTextarea.value = '\\begin{tabular}{' + Array(ncols+1).join("c") + '}\n';
+        for (i = 0; i < arr.length; i++)
+        {
+            for (j = 0; j < arr[i].length-1; j++)
+            {
+                texTextarea.value += arr[i][j] + ' & ';
+            }
+            texTextarea.value += arr[i][j] + ' \\\\\n';
+        }
+        texTextarea.value += '\\end{tabular}';
+    }
+    </script>
+
+    <textarea rows="40" cols="60" id="csvtext">a,b,c
+d,e,f
+g,h,i</textarea>
+    <textarea rows="40" cols="60" id="textext"></textarea>
+    <br/>
+    <input id="submitBTN" type="button" value="Convert!" onclick="convertText()">
+    <p><a href="http://schauerte.me/">B. Schauerte</a>, 2013, Author Tools (<a href="https://github.com/bschauerte/author-tools">@github</a>)</p>
+</body>
+</html>

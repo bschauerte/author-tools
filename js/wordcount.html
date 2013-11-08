@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Character and word count</title>
+    <meta name="description" content="Character and word count">
+    <meta name="keywords" content="paragraph,word,character,count">
+    <meta name="author" content="Boris Schauerte">
+    <script type="text/javascript" src="js/Countable.js" ></script>
+</head>
+<body>
+    <script type="text/javascript">
+    function count() {
+        var textTextarea = document.getElementById("csvtext");
+
+        Countable.once(textTextarea, function (counter) {
+            console.log(counter)
+
+            document.getElementById("paragraphs").value = counter.paragraphs;
+            document.getElementById("words").value      = counter.words;
+            document.getElementById("characters").value = counter.characters;
+            document.getElementById("all").value        = counter.all;
+        }, { hardReturns: true, stripTags: false });
+    }
+    </script>
+
+    <textarea rows="20" cols="60" id="csvtext">The quick brown fox jumps over the lazy dog
+Painful zombies quickly watch a jinxed graveyard.
+Six big devils from Japan quickly forgot how to waltz.</textarea>
+    <br/>
+    <input id="submitBTN" type="button" value="Count!" onclick="count()">
+    <p>
+    <input type="text" id="paragraphs" size="5"> Paragraphs<br/>
+    <input type="text" id="words" size="5"> Words<br/>
+    <input type="text" id="characters" size="5"> Characters<br/>
+    <input type="text" id="all" size="5"> Characters (with spaces)
+    </p>
+    <p><a href="http://schauerte.me/">B. Schauerte</a>, 2013, Author Tools (<a href="https://github.com/bschauerte/author-tools">@github</a>)</p>
+</body>
+</html>
