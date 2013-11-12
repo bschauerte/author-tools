@@ -7,8 +7,8 @@ Collection of tools and scripts that help to write articles.
 ### sh (shell scripts)
 
 The shell scripts mostly represent shortcuts to common (TeX) text analysis via diction/style.
-All scripts have the prefix **bat-**, which makes it simple to use TAB completion to select the right one w/o having to remember individual script names.
-Scripts that have the prefix **bat-tex-** use detex to directly operate on TeX files.
+All scripts have the prefix **at-**, which makes it simple to use TAB completion to select the right one w/o having to remember individual script names.
+Scripts that have the prefix **at-tex-** use detex to directly operate on TeX files.
 
 * **CMakeLists.txt**: Use this to install the scripts via CMake
 * **at-tex-diction**: Print wordy and commonly misused phrases in sentences
