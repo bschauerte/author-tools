@@ -55,13 +55,62 @@
     </script>
 
     <script type="text/javascript">
-    function convertText() {
-        var csvTextarea = document.getElementById("csvtext");
-        var texTextarea = document.getElementById("textext");
+    function rotateMat(arr) {
+        var nrows = 0;
+        var ncols = 0;
+        nrows = arr.length;
+        ncols = arr[0].length;
+        for (var i = 0; i < arr.length; i++)
+        {
+            if (ncols != arr[i].length)
+            {
+                alert('The number of columns is not constant for all rows!');
+            }
+        }
 
-        // get the data
-        var arr = CSVToArray(csvTextarea.value,',')
+        var arrRot = new Array(ncols);
+        for (var i = 0; i < ncols; i++) {
+            arrRot[i] = new Array(nrows);
+            for (var j = 0; j < nrows; j++) {
+                arrRot[i][j] = arr[j][i];
+            }
+        }
 
+        return arrRot;
+    }
+
+    function matToCSV(arr) {
+        // check the table content
+        var nrows = 0;
+        var ncols = 0;
+        nrows = arr.length;
+        ncols = arr[0].length;
+        for (i = 0; i < arr.length; i++)
+        {
+            if (ncols != arr[i].length)
+            {
+                alert('The number of columns is not constant for all rows!');
+            }
+        }
+
+        var str = [];
+        var delim = ','
+        for (i = 0; i < arr.length; i++)
+        {
+            for (j = 0; j < arr[i].length-1; j++)
+            {
+                str += arr[i][j] + delim;
+            }
+            if (i == arr.length-1)
+                str += arr[i][j];
+            else
+                str += arr[i][j] + '\n';
+        }
+
+        return str;
+    }
+
+    function matToTex(arr) {
         // check the table content
         var nrows = 0;
         var ncols = 0;
@@ -76,16 +125,35 @@
         }
 
         // create the LaTeX tabular environment
-        texTextarea.value = '\\begin{tabular}{' + Array(ncols+1).join("c") + '}\n';
+        var str = '\\begin{tabular}{' + Array(ncols+1).join("c") + '}\n';
         for (i = 0; i < arr.length; i++)
         {
             for (j = 0; j < arr[i].length-1; j++)
             {
-                texTextarea.value += arr[i][j] + ' & ';
+                str += arr[i][j] + ' & ';
             }
-            texTextarea.value += arr[i][j] + ' \\\\\n';
+            str += arr[i][j] + ' \\\\\n';
         }
-        texTextarea.value += '\\end{tabular}';
+        str += '\\end{tabular}';
+
+        return str;
+    }
+
+    function convertToTex() {
+        var csvTextarea = document.getElementById("csvtext");
+        var texTextarea = document.getElementById("textext");
+
+        // get the data
+        var arr = CSVToArray(csvTextarea.value,',');
+        texTextarea.value = matToTex(arr);
+    }
+
+    function rotateCSV() {
+        var csvTextarea = document.getElementById("csvtext");
+
+        // rotate the data
+        var arr = CSVToArray(csvTextarea.value,',');
+        csvTextarea.value = matToCSV(rotateMat(arr));
     }
     </script>
 
@@ -94,7 +162,8 @@ d,e,f
 g,h,i</textarea>
     <textarea rows="40" cols="60" id="textext"></textarea>
     <br/>
-    <input id="submitBTN" type="button" value="Convert!" onclick="convertText()">
+    <input id="submitBTN" type="button" value="Convert to TeX!" onclick="convertToTex()">
+    <input id="submitBTN" type="button" value="Rotate matrix!" onclick="rotateCSV()">
     <p><a href="http://schauerte.me/">B. Schauerte</a>, 2013, Author Tools (<a href="https://github.com/bschauerte/author-tools">@github</a>)</p>
 </body>
 </html>
